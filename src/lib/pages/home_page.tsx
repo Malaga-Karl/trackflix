@@ -7,16 +7,20 @@
 
 import Box from "@mui/material/Box";
 import ShowComponent from "../components/shows_component";
-import data from "../mocks/localStorageMock.json";
+// import data from "../mocks/localStorageMock.json";
+// import Typography from "@mui/material/Typography";
+// import TextField from "@mui/material/TextField";
+// import NavComponent from "../components/nav_component";
 
 export default function HomeScreen(){
 
-    const shows = data;
+    const savedShows = localStorage.getItem('myShows');
 
     return(
         <>
             <Box sx={{
-                display:"flex"
+                display:"flex",
+                gap: 3
             }}>
                 {shows.map((show) => (
                     ShowComponent({show})

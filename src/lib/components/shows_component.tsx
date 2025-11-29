@@ -27,6 +27,10 @@ export default function ShowComponent({show}: ShowComponentProps){
                         objectFit: "contain", // or "cover"
                     }}      
                 />
+                <CardContent sx={{display:"flex", justifyContent:"space-around"}}>
+                    <Typography variant="body1">S:{show.season}</Typography>
+                    <Typography variant="body1">Ep:{show.episode}</Typography>
+                </CardContent>
                 <CardActions 
                     sx={{
                         display: "flex",
