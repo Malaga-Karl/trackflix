@@ -1,0 +1,29 @@
+[
+    {
+        "id": 0,
+        "title": "The Big Bang Theory",
+        "posterUrl": "https://static.tvmaze.com/uploads/images/medium_portrait/173/433868.jpg",
+        "season": 1,
+        "seasons": 10,
+        "episode": 1,
+        "episodes": 22
+    },
+    {
+        "id": 1,
+        "title": "How I Met Your Mother",
+        "posterUrl": "https://static.tvmaze.com/uploads/images/medium_portrait/173/433868.jpg",
+        "season": 1,
+        "seasons": 10,
+        "episode": 1,
+        "episodes": 22
+    },
+    {
+        "id": 2,
+        "title": "Community",
+        "posterUrl": "https://static.tvmaze.com/uploads/images/medium_portrait/173/433868.jpg",
+        "season": 1,
+        "seasons": 10,
+        "episode": 1,
+        "episodes": 22
+    }
+]
