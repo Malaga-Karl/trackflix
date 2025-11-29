@@ -5,10 +5,10 @@
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+// import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+// import CardContent from "@mui/material/CardContent";
+// import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -59,8 +59,8 @@ export default function ShowDetails(){
     const [details, setDetails] = useState<ShowDetails>()
     const [loading, setLoading] = useState<boolean>(true);
     const [seasonStructure, setSeasonStructure] = useState<SeasonStructure | null>(null);
-    const [currentSeason, setCurrentSeason] = useState<number>(1);
-    const [currentEpisode, setCurrentEpisode] = useState<number>(1);
+    const [currentSeason] = useState<number>(1);
+    const [currentEpisode] = useState<number>(1);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
     // Primary effect: Fetch show details (blocks render)

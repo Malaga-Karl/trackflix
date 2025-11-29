@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, CardMedia, CardContent, Typography, Grid, Box, CardActionArea, CircularProgress } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Box, CardActionArea, CircularProgress } from "@mui/material";
 
 type Show = {
   id: number;

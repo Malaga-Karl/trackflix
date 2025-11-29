@@ -9,9 +9,9 @@ import Box from "@mui/material/Box";
 import ShowComponent from "../components/shows_component";
 import type Show from "../types/shows";
 // import data from "../mocks/localStorageMock.json";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+// import Typography from "@mui/material/Typography";
+// import Card from "@mui/material/Card";
+// import CardContent from "@mui/material/CardContent";
 import AddShowComponent from "../components/add_show_component";
 
 // import TextField from "@mui/material/TextField";
