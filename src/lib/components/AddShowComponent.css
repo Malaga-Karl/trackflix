@@ -1,0 +1,14 @@
+.add-show-card {
+  width: 250px;
+  height: 400px;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-show-card:hover {
+  background-color: #333; /* changes on hover */
+}

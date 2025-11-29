@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, CardMedia, CardContent, Typography, Grid, Box, CardActionArea } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Grid, Box, CardActionArea, CircularProgress } from "@mui/material";
 
 type Show = {
   id: number;
@@ -33,7 +33,14 @@ export default function SearchResults() {
       .finally(() => setLoading(false));
   }, [query]);
 
-  if (loading) return <Typography>Loading...</Typography>;
+  if (loading) return (
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+        <CircularProgress size={60} />
+        <Typography variant="body1">Searching for "{query}"...</Typography>
+      </Box>
+    </Box>
+  );
   if (!results.length) return <Typography>No results found for "{query}"</Typography>;
 
   return (
@@ -42,9 +49,9 @@ export default function SearchResults() {
         Search results for "{query}"
       </Typography>
 
-      <Box sx={{display: "flex", gap:5}}>
+      <Box sx={{display: "flex", gap:5, flexWrap: "wrap"}}>
         {results.map((show) => (
-            <Card sx={{width:250, maxHeight: 400}}>
+            <Card sx={{width:200, height: 350}}>
               <CardActionArea onClick={() => navigate(`/show/${show.id}`)}>
                 <CardMedia
                     component="img"

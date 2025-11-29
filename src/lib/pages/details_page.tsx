@@ -10,8 +10,10 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import AddIcon from '@mui/icons-material/Add';
 
 type ShowDetails = {
@@ -36,12 +38,32 @@ type ShowDetails = {
   summary: string;
 }
 
+type SeasonStructure = {
+  [seasonNumber: number]: number; // season number -> episode count
+}
+
+type WatchlistItem = {
+  id: number;
+  name: string;
+  season: number;
+  episode: number;
+  seasons: number;        // total seasons
+  episodes: number;       // total episodes per season (or max)
+  posterUrl?: string;
+}
+
 export default function ShowDetails(){
     
     const {id} = useParams<{id: string}>();
+    const navigate = useNavigate();
     const [details, setDetails] = useState<ShowDetails>()
     const [loading, setLoading] = useState<boolean>(true);
+    const [seasonStructure, setSeasonStructure] = useState<SeasonStructure | null>(null);
+    const [currentSeason, setCurrentSeason] = useState<number>(1);
+    const [currentEpisode, setCurrentEpisode] = useState<number>(1);
+    const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
+    // Primary effect: Fetch show details (blocks render)
     useEffect(() => {
         if (!id) return;
 
@@ -53,11 +75,86 @@ export default function ShowDetails(){
         .finally(() => setLoading(false));
     }, [id])
 
-    if (loading) return <Typography>Loading...</Typography>;
+    // Secondary effect: Fetch season/episode structure in background (non-blocking)
+    useEffect(() => {
+        if (!id) return;
+
+        const fetchSeasonStructure = async () => {
+            try {
+                const seasonsRes = await fetch(`https://api.tvmaze.com/shows/${id}/seasons`);
+                const seasons = await seasonsRes.json();
+                
+                const structure: SeasonStructure = {};
+                for (const season of seasons) {
+                    const episodesRes = await fetch(`https://api.tvmaze.com/seasons/${season.id}/episodes`);
+                    const episodes = await episodesRes.json();
+                    structure[season.number] = episodes.length;
+                }
+                
+                setSeasonStructure(structure);
+            } catch (error) {
+                console.error("Failed to fetch season structure:", error);
+            }
+        };
+
+        fetchSeasonStructure();
+    }, [id])
+
+    if (loading) return (
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                <CircularProgress size={60} />
+                <Typography variant="body1">Loading show details...</Typography>
+            </Box>
+        </Box>
+    );
     if (!details) return <Typography>Show not found</Typography>;
+
+    const handleAddToWatchlist = () => {
+        if (!seasonStructure) {
+            console.warn("Season structure not loaded yet");
+            return;
+        }
+
+        const totalSeasons = Object.keys(seasonStructure).length;
+        const maxEpisodes = Math.max(...Object.values(seasonStructure));
+
+        const watchlistItem: WatchlistItem = {
+            id: details.id,
+            name: details.name,
+            season: currentSeason,
+            episode: currentEpisode,
+            seasons: totalSeasons,
+            episodes: maxEpisodes,
+            posterUrl: details.image?.medium
+        };
+
+        // Get existing watchlist from localStorage
+        const existingWatchlist = localStorage.getItem('watchlist');
+        const watchlist: WatchlistItem[] = existingWatchlist ? JSON.parse(existingWatchlist) : [];
+
+        // Check if show already exists, if so update it, otherwise add it
+        const existingIndex = watchlist.findIndex(item => item.id === details.id);
+        if (existingIndex >= 0) {
+            watchlist[existingIndex] = watchlistItem;
+        } else {
+            watchlist.push(watchlistItem);
+        }
+
+        // Save back to localStorage
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        console.log("Added to watchlist:", watchlistItem);
+        
+        // Show success message and redirect
+        setShowSuccess(true);
+        setTimeout(() => {
+            navigate('/');
+        }, 1500);
+    };
     
   return (
     <Box p={2} sx={{display:"flex", gap:5}}>
+      {showSuccess && <Alert severity="success" sx={{position: "fixed", top: 20, right: 20}}>Added successfully!</Alert>}
       <img src={details.image?.original} alt={details.name} width={300}/>
       <Box>
         <Typography variant="h2" sx={{fontWeight:"bold"}}>{details.name}</Typography>
@@ -68,7 +165,7 @@ export default function ShowDetails(){
         <Typography variant="body1" sx={{fontSize: 20}}>{details.summary?.replace(/<[^>]+>/g, "") || "No description available"}</Typography>
         <br />
         <br />
-        <Button startIcon={<AddIcon/>} variant="contained">Add to Watchlist</Button>
+        <Button startIcon={<AddIcon/>} variant="contained" onClick={handleAddToWatchlist}>Add to Watchlist</Button>
       </Box>
     </Box>
   );

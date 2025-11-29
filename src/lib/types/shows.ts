@@ -1,9 +1,10 @@
 export default interface Show {
     id: number,
-    title: string,
+    name: string,
     season: number,
     seasons: number,
     episode: number,
     episodes: number,
-    posterUrl?: string
+    posterUrl?: string,
+    title?: string    // for backwards compatibility
 }
