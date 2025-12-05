@@ -6,7 +6,7 @@
 // add nav bar with title
 
 import Box from "@mui/material/Box";
-import ShowComponent from "../components/shows_component";
+import ShowComponent from "../components/shows_component_copy";
 import type Show from "../types/shows";
 // import data from "../mocks/localStorageMock.json";
 // import Typography from "@mui/material/Typography";
@@ -17,29 +17,28 @@ import AddShowComponent from "../components/add_show_component";
 // import TextField from "@mui/material/TextField";
 // import NavComponent from "../components/nav_component";
 
-export default function HomeScreen(){
+export default function HomeScreen() {
+  const savedShows = localStorage.getItem("watchlist");
+  if (!savedShows) {
+    return (
+      <>
+        <AddShowComponent />
+      </>
+    );
+  }
 
-    const savedShows = localStorage.getItem('watchlist');
-    if(!savedShows){
-        return(
-            <>
-                <AddShowComponent/>
-            </>
-        )
-    }
-
-    const shows = JSON.parse(savedShows) as Show[];
-    return(
-        <>
-            <Box sx={{
-                display:"flex",
-                gap: 3
-            }}>
-                {shows.map((show) => (
-                    ShowComponent({show})
-                ))}
-                <AddShowComponent/>
-            </Box>
-        </>
-    )
+  const shows = JSON.parse(savedShows) as Show[];
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 3,
+        }}
+      >
+        {shows.map((show) => ShowComponent({ show }))}
+        <AddShowComponent />
+      </Box>
+    </>
+  );
 }

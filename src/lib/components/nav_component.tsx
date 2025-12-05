@@ -32,46 +32,54 @@ export default function NavComponent(){
         <>
               <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                 <Box display={"flex"} gap={3} alignItems={"center"}>
-                    <Link style={{textDecoration:"none", color:"violet"}} to={'/'}>Trackflix</Link>
+                    {/* <Link style={{textDecoration:"none", color:"violet"}} to={'/'}>Trackflix</Link> */}
                     <Typography variant="h6" sx={{fontFamily:"Science Gothic"}}>Who's watching their shows on pirate sites? You are! 🫵😂</Typography>
                 </Box>
                <TextField
-  sx={{
-    "& .MuiInputBase-root": {
-      borderRadius: "12px",
-      height: "40px",
-      paddingRight: "10px",
-      backgroundColor: "black",
-      color: "white",
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: "10px 12px", // controls label and text layout
-    },
-    "& .MuiInputLabel-root": {
-      transform: "translate(14px, 10px) scale(1)", // keep label centered vertically
-      color: "#aaa",
-    },
-    "& .MuiInputLabel-root.Mui-focused": {
-      transform: "translate(14px, -8px) scale(0.75)", // properly float when typing/focused
-      color: "#fff",
-    },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#555",
-    },
-    "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#999",
-    },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#fff",
-    },
-  }}
-  label="Search TV Shows"
-  inputRef={searchInputRef}
-  variant="outlined"
-  value={term}
-  onChange={handleChange}
-  onKeyDown={handleKeyDown}
-/>
+                                  
+                sx={{
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "#111",
+                      color: "white",
+                      borderRadius: "12px",
+                      height: 40,
+
+                      "& input": {
+                        padding: "10px 12px",
+                      },
+                    },
+
+                    // --- LABEL FIX (IMPORTANT) ---
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                      transform: "translate(14px, 10px) scale(1)",   // default position
+                      transition: "all 0.2s ease"
+                    },
+
+                    // when focused -> float
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                      transform: "translate(14px, -6px) scale(0.75)",
+                    },
+
+                    // when has value (filled) -> float even without focus
+                    "& .MuiInputLabel-root.MuiFormLabel-filled": {
+                      color: "white",
+                      transform: "translate(14px, -6px) scale(0.75)",
+                    },
+
+                    // border color
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "white",
+                    }
+                  }}
+                   label="Search TV Shows"
+                   inputRef={searchInputRef}
+                   variant="outlined"
+                   value={term}
+                   onChange={handleChange}
+                   onKeyDown={handleKeyDown}
+               />
 
             </Box>
         </>
